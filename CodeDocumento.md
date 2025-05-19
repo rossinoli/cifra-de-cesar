@@ -53,7 +53,7 @@ function caesarCipherASCII(text, key, mode) {
 ```
 Use code with caution.
 JavaScript
-Parâmetros
+## Parâmetros
 text (String): O texto a ser codificado ou decodificado.
 
 key (Integer): O número de posições para deslocar cada letra. Pode ser positivo (para codificar "para frente") ou negativo.
@@ -64,7 +64,7 @@ mode (String): Define a operação a ser realizada.
 
 'decode': Para decodificar o texto.
 
-Validação de Entrada
+## Validação de Entrada
 No início da função, há uma verificação básica para garantir que os tipos de text e key sejam os esperados.
 
 if (typeof text !== 'string' || !Number.isInteger(key)) {
