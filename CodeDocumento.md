@@ -42,13 +42,15 @@ O script utiliza apenas um módulo nativo do Node.js:
 ```javascript
 const readline = require('readline');
 Use code with caution.
-Markdown
-3. Função Principal de Criptografia (caesarCipherASCII)
-Esta função é o coração do algoritmo da Cifra de César.
+```
 
+# 3. Função Principal de Criptografia (caesarCipherASCII)
+Esta função é o coração do algoritmo da Cifra de César.
+```javascript
 function caesarCipherASCII(text, key, mode) {
     // ... implementação ...
 }
+```
 Use code with caution.
 JavaScript
 Parâmetros
