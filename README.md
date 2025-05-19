@@ -39,10 +39,9 @@ O programa solicitará:
 
 O resultado será exibido no terminal.
 
-<!-- Opcional: Adicionar um GIF simples aqui demonstrando a CLI em ação -->
-<!-- <p align="center">
-  <img src="link_para_seu_gif_aqui.gif" alt="Demonstração da Cifra de César CLI">
-</p> -->
+ <p align="center">
+  <img src="https://github.com/user-attachments/assets/0c86ae27-a503-4762-b463-2d7755aae953" alt="Demonstração da Cifra de César CLI">
+</p> 
 
 ## 👨‍💻 Autor
 
