@@ -74,14 +74,15 @@ Use code with caution.
 JavaScript
 Isso ajuda a prevenir erros inesperados durante o processamento se a função for chamada com tipos de dados incorretos.
 
-Lógica de Deslocamento (Shift)
+## Lógica de Deslocamento (Shift)
 A variável shift determina o valor real do deslocamento a ser aplicado.
 Se o mode for 'decode', o shift é o negativo da key fornecida, efetivamente revertendo a operação de codificação.
 
 const shift = mode === 'encode' ? key : -key;
 Use code with caution.
 JavaScript
-Iteração e Processamento de Caracteres
+
+## Iteração e Processamento de Caracteres
 A função itera sobre cada caractere do text de entrada.
 
 for (let i = 0; i < text.length; i++) {
@@ -132,16 +133,16 @@ Use code with caution.
 JavaScript
 Observação: A validação de entrada na interface do usuário atualmente restringe o texto a apenas letras e espaços, então esta cláusula else primariamente lidaria com espaços.
 
-Retorno
+## Retorno
 A função retorna a string result, que contém o texto processado (codificado ou decodificado).
 
 return result;
 Use code with caution.
 JavaScript
-4. Interface de Linha de Comando (CLI)
+## 4. Interface de Linha de Comando (CLI)
 Esta seção do código gerencia a interação com o usuário no terminal.
 
-Configuração do readline
+## Configuração do readline
 Uma instância do readline.Interface é criada para ler a entrada do usuário (process.stdin) e escrever a saída (process.stdout).
 
 const rl = readline.createInterface({
@@ -150,7 +151,7 @@ const rl = readline.createInterface({
 });
 Use code with caution.
 JavaScript
-Funções Auxiliares de Exibição
+## Funções Auxiliares de Exibição
 Existem três funções para formatar e exibir informações no console:
 
 displayHeader()
@@ -183,7 +184,7 @@ function displayResult(mode, key, originalText, processedText) {
 }
 Use code with caution.
 JavaScript
-Fluxo Principal de Execução (Interação com Usuário)
+## Fluxo Principal de Execução (Interação com Usuário)
 O programa começa exibindo o cabeçalho e, em seguida, usa uma série de chamadas aninhadas a rl.question() para coletar as informações do usuário de forma sequencial e assíncrona.
 
 displayHeader();
@@ -259,7 +260,7 @@ try {
 }
 Use code with caution.
 JavaScript
-Encerramento do Programa
+## Encerramento do Programa
 Um ouvinte de evento é configurado para o evento 'close' da interface readline. Este evento é disparado quando rl.close() é chamado.
 
 rl.on('close', () => {
