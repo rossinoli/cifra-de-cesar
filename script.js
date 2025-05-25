@@ -2,6 +2,8 @@ const readline = require('readline');
 
 // --- Função da Cifra de César ---
 function caesarCipherASCII(text, key, mode) {
+    // A validação interna da função já espera que 'key' seja um inteiro.
+    // A validação da entrada do usuário deve garantir isso antes de chamar esta função.
     if (typeof text !== 'string' || !Number.isInteger(key)) {
         throw new Error("Entrada inválida para caesarCipherASCII: texto deve ser string e chave deve ser inteiro.");
     }
@@ -45,26 +47,26 @@ function displayHeader() {
     console.log("---------------------------------------------------------");
     console.log(" REGRAS:");
     console.log("   - Texto: Apenas letras (A-Z, a-z) e espaços.");
-    console.log("   - Chave: Número inteiro entre -25 e 25.");
+    console.log("   - Chave: Número inteiro entre -25 e 25 (sem decimais)."); // Regra atualizada
     console.log("---------------------------------------------------------\n");
 }
 
 function displayError(message) {
-    const separatorLine = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; 
+    const separatorLine = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
-    console.log("\n"); 
+    console.log("\n");
     console.log(separatorLine);
-    console.log("                    >>>   E R R O   <<<"); 
-    console.log("\n   [Problema]: " + message); 
+    console.log("                    >>>   E R R O   <<<");
+    console.log("\n   [Problema]: " + message);
     console.log("\n" + separatorLine);
-    console.log(); 
+    console.log();
 }
 
 function displayResult(mode, key, originalText, processedText) {
-     console.log("\n----------<<< ✨ RESULTADO ✨ >>----------"); 
+     console.log("\n----------<<< ✨ RESULTADO ✨ >>----------");
      console.log(`   Operação Escolhida: ${mode}`);
      console.log(`   Chave Utilizada:    ${key}`);
-     console.log("   ........................................"); 
+     console.log("   ........................................");
      console.log(`   Texto Original:     ${originalText}`);
      console.log(`   Texto Processado:   ${processedText}`);
      console.log("------------------------------------------\n");
@@ -72,7 +74,7 @@ function displayResult(mode, key, originalText, processedText) {
 
 // --- Execução da Interface ---
 
-displayHeader(); 
+displayHeader();
 
 console.log("--- [ PASSO 1: Operação ] ---");
 rl.question("   > Escolha (encode/decode): ", (mode) => {
@@ -81,48 +83,79 @@ rl.question("   > Escolha (encode/decode): ", (mode) => {
         displayError('Operação inválida. Escolha "encode" ou "decode".');
         rl.close();
         process.exit(1);
+        return;
     }
-    console.log("   OK.\n"); 
+    console.log("   OK.\n");
 
     console.log("--- [ PASSO 2: Texto ] ---");
     rl.question("   > Digite o texto: ", (text) => {
         const containsNumbers = /\d/.test(text);
-        const containsSymbols = /[^a-zA-Z\s]/.test(text); 
+        // Verifica se há algo que NÃO seja letra ou espaço.
+        const containsSymbols = /[^a-zA-Z\s]/.test(text);
 
         if (containsNumbers || containsSymbols) {
             let errorMsg = 'O texto só pode conter letras (a-z, A-Z) e espaços.';
-            if (containsNumbers) errorMsg += ' (Números não são permitidos).';
-            if (containsSymbols) errorMsg += ' (Símbolos não são permitidos).';
+            if (containsNumbers && containsSymbols) {
+                errorMsg += ' (Números e símbolos não são permitidos).';
+            } else if (containsNumbers) {
+                errorMsg += ' (Números não são permitidos).';
+            } else if (containsSymbols) {
+                errorMsg += ' (Símbolos não são permitidos).';
+            }
             displayError(errorMsg);
             rl.close();
             process.exit(1);
+            return;
         }
-        console.log("   Texto válido.\n"); 
+        console.log("   Texto válido.\n");
 
         console.log("--- [ PASSO 3: Chave ] ---");
         rl.question("   > Digite a chave (-25 a 25): ", (keyInput) => {
-            const key = parseInt(keyInput.trim(), 10);
-            if (isNaN(key)) {
-                displayError('Chave inválida. Deve ser um número inteiro.');
+            const trimmedKeyInput = keyInput.trim();
+            let key; // Variável para armazenar a chave validada
+
+            if (trimmedKeyInput === "") {
+                displayError('Chave inválida. A chave não pode ser vazia.');
                 rl.close();
                 process.exit(1);
+                return;
             }
+
+            // Tenta converter a entrada para um número.
+            // Number() é mais estrito que parseInt() para strings não numéricas inteiras.
+            // Ex: Number("1.3") é 1.3, Number("5x") é NaN.
+            const numericAttempt = Number(trimmedKeyInput);
+
+            // Verifica se a conversão resultou em NaN OU se o número não é um inteiro.
+            if (isNaN(numericAttempt) || !Number.isInteger(numericAttempt)) {
+                displayError('Chave inválida. Deve ser um número inteiro (ex: 3, -5, sem decimais ou letras).');
+                rl.close();
+                process.exit(1);
+                return;
+            }
+
+            key = numericAttempt; // Se passou nas validações, 'key' recebe o valor inteiro.
+
+            // Agora verifica o intervalo da chave
             if (key < -25 || key > 25) {
                 displayError(`A chave (${key}) está fora do intervalo permitido (-25 a 25).`);
                 rl.close();
                 process.exit(1);
+                return;
             }
-            console.log("   Chave válida.\n"); 
+            console.log("   Chave válida.\n");
 
             try {
-                console.log("... Calculando resultado ..."); 
+                console.log("... Calculando resultado ...");
                 const calculatedResult = caesarCipherASCII(text, key, mode);
 
                  displayResult(mode, key, text, calculatedResult);
 
-                rl.close(); 
+                rl.close();
 
             } catch (error) {
+                // Este catch é mais para erros inesperados da própria função caesarCipherASCII,
+                // já que a validação de tipo da chave é feita antes.
                 displayError(`Erro durante o processamento: ${error.message}`);
                 rl.close();
                 process.exit(1);
