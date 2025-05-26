@@ -47,7 +47,7 @@ function displayHeader() {
     console.log("---------------------------------------------------------");
     console.log(" REGRAS:");
     console.log("   - Texto: Apenas letras (A-Z, a-z) e espaços.");
-    console.log("   - Chave: Número inteiro entre -25 e 25 (sem decimais)."); // Regra atualizada
+    console.log("   - Chave: Número inteiro entre -25 e 25 (sem decimais).");
     console.log("---------------------------------------------------------\n");
 }
 
@@ -90,7 +90,7 @@ rl.question("   > Escolha (encode/decode): ", (mode) => {
     console.log("--- [ PASSO 2: Texto ] ---");
     rl.question("   > Digite o texto: ", (text) => {
         const containsNumbers = /\d/.test(text);
-        // Verifica se há algo que NÃO seja letra ou espaço.
+        
         const containsSymbols = /[^a-zA-Z\s]/.test(text);
 
         if (containsNumbers || containsSymbols) {
@@ -121,9 +121,6 @@ rl.question("   > Escolha (encode/decode): ", (mode) => {
                 return;
             }
 
-            // Tenta converter a entrada para um número.
-            // Number() é mais estrito que parseInt() para strings não numéricas inteiras.
-            // Ex: Number("1.3") é 1.3, Number("5x") é NaN.
             const numericAttempt = Number(trimmedKeyInput);
 
             // Verifica se a conversão resultou em NaN OU se o número não é um inteiro.
@@ -134,7 +131,7 @@ rl.question("   > Escolha (encode/decode): ", (mode) => {
                 return;
             }
 
-            key = numericAttempt; // Se passou nas validações, 'key' recebe o valor inteiro.
+            key = numericAttempt; 
 
             // Agora verifica o intervalo da chave
             if (key < -25 || key > 25) {
@@ -155,7 +152,6 @@ rl.question("   > Escolha (encode/decode): ", (mode) => {
 
             } catch (error) {
                 // Este catch é mais para erros inesperados da própria função caesarCipherASCII,
-                // já que a validação de tipo da chave é feita antes.
                 displayError(`Erro durante o processamento: ${error.message}`);
                 rl.close();
                 process.exit(1);
